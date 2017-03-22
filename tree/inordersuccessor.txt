@@ -1,0 +1,90 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+        // write your code here
+        if (root == NULL || p == NULL) {
+            return NULL;
+        }
+        int leastgreaterancestor = INT_MAX;
+        TreeNode *ans = NULL;
+        int successor = p->val;
+        TreeNode *node = p->right;
+        while (node != NULL) {
+            successor = node->val;
+            ans = node;
+            node = node->left;
+        }
+        if (successor > p->val) {
+            return ans;
+        }
+        node = root;
+        while (node != p) {
+            if (p->val > node->val) {
+                node = node->right;
+            }
+            if (p->val < node->val) {
+                leastgreaterancestor = node->val;
+                ans = node;
+                node = node->left;
+            }
+        }
+        return ans;
+    }
+};
+
+
+//solution
+/**
+ * 本代码由九章算法编辑提供。没有版权欢迎转发。
+ * - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+ * - 现有的面试培训课程包括：九章算法班，系统设计班，BAT国内班
+ * - 更多详情请见官方网站：http://www.jiuzhang.com/
+ */
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
+        TreeNode *successor = NULL;
+        while (root != NULL && root->val != p->val) {
+            if (root->val > p->val) {
+                successor = root;
+                root = root->left;
+            } else {
+                root = root->right;
+            }
+        }
+        
+        if (root == NULL) {
+            return NULL;
+        }
+        
+        if (root->right == NULL) {
+            return successor;
+        }
+        
+        root = root->right;
+        while (root->left != NULL) {
+            root = root->left;
+        }
+        
+        return root;
+     }
+};

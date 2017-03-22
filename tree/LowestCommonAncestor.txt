@@ -1,0 +1,47 @@
+http://blog.csdn.net/beiyetengqing/article/details/7633651
+
+
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param A and B: two nodes in a Binary.
+     * @return: Return the least common ancestor(LCA) of the two nodes.
+     */
+     bool found(TreeNode *root, TreeNode *target) {
+         if (root == NULL) {
+             return false;
+         }
+         if (root == target) {
+             return true;
+         }
+         if (found(root->left, target)) {
+             return true;
+         }
+         if (found(root->right,target)) {
+             return true;
+         }
+     }
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *A, TreeNode *B) {
+        // write your code here
+        if (found(root->left, A) && found(root->left, B)) {
+            return lowestCommonAncestor(root->left, A, B);
+        }
+        if (found(root->right, A) && found(root->right, B)) {
+            return lowestCommonAncestor(root->right, A, B);
+        }
+        return root;
+    }
+};

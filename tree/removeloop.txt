@@ -1,0 +1,74 @@
+
+/**
+ * 本代码由九章算法编辑提供。没有版权欢迎转发。
+ * - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+ * - 现有的面试培训课程包括：九章算法班，系统设计班，BAT国内班
+ * - 更多详情请见官方网站：http://www.jiuzhang.com/
+ */
+
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param value: Remove the node with given value.
+     * @return: The root of the binary search tree after removal.
+     */
+    TreeNode* removeNode(TreeNode* root, int value) {
+        // write your code here
+        if (root == NULL)
+            return NULL;
+        TreeNode * head = new TreeNode();
+        head->left = root;
+        TreeNode * tmp = root, *father = head;
+
+        while (tmp != NULL) {
+            if (tmp->val == value)
+                break;
+            father = tmp;
+            if (tmp->val > value)
+                tmp = tmp->left;
+            else
+                tmp = tmp->right;
+        }
+        if (tmp == NULL)
+            return root;
+
+        if (tmp->right == NULL) {
+            if (father->left == tmp)
+                father->left = tmp->left;
+            else
+                father->right = tmp->left;
+        } else if (tmp->right->left == NULL) {
+            if (father->left == tmp)
+                father->left = tmp->right;
+            else
+                father->right = tmp->right;
+
+            tmp->right->left = tmp->left;
+        } else {
+            father = tmp->right;
+            TreeNode * cur = tmp->right->left;
+            while (cur->left != NULL) {
+                father = cur;
+                cur = cur->left;
+            }
+            tmp->val = cur->val;
+            father->left = cur->right;
+        }
+        root = head->left;
+        delete head;
+        return root;
+    }
+};

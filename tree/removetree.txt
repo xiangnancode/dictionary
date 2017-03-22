@@ -1,0 +1,51 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param value: Remove the node with given value.
+     * @return: The root of the binary search tree after removal.
+     */
+    TreeNode* remove(TreeNode *node, int value) {
+        if (node == NULL) {
+            return node;
+        }
+        if (value < node->val) {
+            node->left = remove(node->left, value);
+        } else if (value > node->val) {
+            node->right = remove(node->right, value);
+        } else {
+            if (node->left == NULL && node->right == NULL) {
+                node = NULL;
+            } else if (node->left == NULL) {
+                node = node->right;
+            } else if (node->right == NULL) {
+                node = node->left;
+            } else {
+                TreeNode *successor = node->right;
+                while (successor->left != NULL) {
+                    successor = successor->left;
+                }
+                node->val = successor->val;
+                successor = successor->right;
+            }
+        }
+        return node;
+    }
+    TreeNode* removeNode(TreeNode* root, int value) {
+        // write your code here
+        root = remove(root, value);
+        return root;
+    }
+};

@@ -1,0 +1,52 @@
+class Solution {
+public:
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    int jump(vector<int> A) {
+        // wirte your code here
+        int length = A.size();
+        int steps[length];
+        steps[0] = 0;
+        for (int i = 1; i < length; ++i) {
+            steps[i] = INT_MAX;
+            for (int j = 0; j < i; ++j) {
+                if (steps[j] != INT_MAX && j + A[j] >= i) {
+                    //steps[i] = (steps[i] < steps[j] + 1) ? steps[i] : steps[j] + 1;
+                    steps[i] = steps[j] + 1;
+                    break;
+                }
+            }
+        }
+        return (steps[length-1] == INT_MAX) ? 0 : steps[length-1];
+    }
+};
+
+//greedy
+
+class Solution {
+public:
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    int jump(vector<int> A) {
+        // wirte your code here
+        int length = A.size();
+        if (length == 0) {
+            return 0;
+        }
+        int start = 0, end = 0, farest = 0, jumps = 0;
+        while (end < length - 1) {
+            farest = end;
+            for ( int i = start; i <= end; ++i) {
+                farest = max(farest, A[i] + i);
+            }
+            start = end + 1;
+            end = farest;
+            ++jumps;
+        }
+        return jumps;
+    }
+};

@@ -1,0 +1,28 @@
+class Solution {
+public:
+    /**
+     * @param triangle: a list of lists of integers.
+     * @return: An integer, minimum path sum.
+     */
+    int minimumTotal(vector<vector<int> > &triangle) {
+        // write your code here
+        int m = triangle.size();
+        if (m == 0) {
+            return 0;
+        }
+        vector<int> sums{triangle[0][0]};
+        int left = 0, right = 0;
+        for (int x = 1; x < m; ++x) {
+            right = sums[0];
+            sums[0] = right + triangle[x][0];
+            for (int y = 1; y <= x-1; ++y) {
+                left = right;
+                right = sums[y];
+                sums[y] = triangle[x][y] + min(left, right);
+            }
+            left = right;
+            sums.push_back(triangle[x][x] + left);
+        }
+        return *min_element(sums.begin(), sums.end());
+    }
+};
